@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  feed-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: feed-ui
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    volumes:
+      # 可選：掛載資料檔案以便動態更新
+      - ./public/data.json:/usr/share/nginx/html/data.json:ro
