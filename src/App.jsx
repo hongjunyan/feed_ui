@@ -30,15 +30,22 @@ function App() {
   const [selectedIndex, setSelectedIndex] = useState(null)
   const mainPanelRef = useRef(null)
 
+  const sortByDateDesc = (arr) =>
+    [...arr].sort((a, b) => {
+      const ta = a.date ? new Date(a.date).getTime() : 0
+      const tb = b.date ? new Date(b.date).getTime() : 0
+      return tb - ta
+    })
+
   useEffect(() => {
     fetch('/newsfeed/data.json')
       .then((res) => res.json())
       .then((json) => {
-        setData(json)
+        setData(sortByDateDesc(json))
         setLoading(false)
       })
       .catch(() => {
-        setData(FALLBACK_DATA)
+        setData(sortByDateDesc(FALLBACK_DATA))
         setLoading(false)
       })
   }, [])
@@ -55,7 +62,10 @@ function App() {
   if (loading) {
     return (
       <div className="app-loading">
-        <div className="loading-spinner">載入中...</div>
+        <div className="loading-dots">
+          <span /><span /><span />
+        </div>
+        <p className="loading-text">載入中…</p>
       </div>
     )
   }
@@ -64,8 +74,18 @@ function App() {
     <div className="app">
       <header className="app-header">
         <div className="app-header-inner">
-          <h1>Feed 牆</h1>
-          <p className="app-subtitle">產業導向的新聞摘要，每日晚上 12 點更新</p>
+          <div className="app-header-logo">
+            <div className="app-header-logo-mark">
+              <svg viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
+                <rect x="1" y="1" width="5" height="2" rx="1" />
+                <rect x="1" y="5" width="12" height="2" rx="1" />
+                <rect x="1" y="9" width="9" height="2" rx="1" />
+              </svg>
+            </div>
+            <h1>Feed 牆</h1>
+          </div>
+          <div className="app-divider" />
+          <p className="app-subtitle">世界很吵，五則就好，每日00:00點準時更新</p>
         </div>
         {hasSelection && (
           <button
@@ -85,15 +105,20 @@ function App() {
             {data.length === 0 ? (
               <div className="empty-state">目前沒有資料</div>
             ) : (
-              data.map((item, index) => (
-                <ArticleListItem
-                  key={index}
-                  data={item}
-                  isSelected={selectedIndex === index}
-                  compact={hasSelection}
-                  onClick={() => handleSelect(index)}
-                />
-              ))
+              <>
+                <div className="sidebar-header">
+                  <span className="sidebar-count">共 {data.length} 篇</span>
+                </div>
+                {data.map((item, index) => (
+                  <ArticleListItem
+                    key={index}
+                    data={item}
+                    isSelected={selectedIndex === index}
+                    compact={hasSelection}
+                    onClick={() => handleSelect(index)}
+                  />
+                ))}
+              </>
             )}
           </div>
         </aside>
@@ -106,6 +131,7 @@ function App() {
             </div>
           ) : (
             <div className="empty-detail">
+              <span className="empty-detail-icon">📰</span>
               <span>點擊左側文章以閱讀詳細內容</span>
             </div>
           )}
