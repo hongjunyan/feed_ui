@@ -1,0 +1,153 @@
+/* ── ArticleListItem ── */
+
+.ali {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 1.1rem 0;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  border-radius: 0;
+  position: relative;
+}
+
+.ali:first-child {
+  border-top: 1px solid #f0f0f0;
+}
+
+.ali:hover {
+  background: #f8fafc;
+}
+
+.ali.selected {
+  background: #eff6ff;
+  border-bottom-color: #dbeafe;
+}
+
+.ali.selected::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #3b82f6;
+  border-radius: 0 2px 2px 0;
+}
+
+/* Topic badge */
+.ali-topic {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #475569;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  padding: 0.1rem 0.5rem;
+  border-radius: 3px;
+  margin-bottom: 0.45rem;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Title */
+.ali-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+  line-height: 1.5;
+  margin: 0 0 0.5rem;
+}
+
+/* Meta row */
+.ali-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.ali-date {
+  font-size: 0.78rem;
+  color: #94a3b8;
+}
+
+.ali-slot {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 500;
+  padding: 0.1rem 0.5rem;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+
+.ali-slot.ts-pre {
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+  color: #1565c0;
+  border: 1px solid #90caf9;
+}
+
+.ali-slot.ts-post {
+  background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+  color: #e65100;
+  border: 1px solid #ffb74d;
+}
+
+.ali-slot.ts-evening {
+  background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+  color: #6a1b9a;
+  border: 1px solid #ce93d8;
+}
+
+.ali-count {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: #0369a1;
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  padding: 0.1rem 0.5rem;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+
+/* ── Compact (sidebar) mode ── */
+
+.ali.compact {
+  padding: 0.7rem 1rem 0.7rem 1.25rem;
+}
+
+.ali.compact.selected {
+  background: #eff6ff;
+}
+
+.ali.compact .ali-title {
+  font-size: 0.875rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 0.35rem;
+}
+
+.ali.compact .ali-topic {
+  font-size: 0.62rem;
+  margin-bottom: 0.3rem;
+}
+
+.ali.compact .ali-date {
+  font-size: 0.72rem;
+}
+
+.ali.compact .ali-slot {
+  font-size: 0.62rem;
+}
+
+.ali.compact .ali-count {
+  font-size: 0.65rem;
+}

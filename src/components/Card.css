@@ -1,14 +1,8 @@
 .card {
   background-color: #fff;
-  border-radius: 8px;
-  padding: 2rem;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.2s ease;
-}
-
-.card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  padding: 2rem 2.25rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07), 0 4px 16px rgba(0, 0, 0, 0.06);
 }
 
 .card-header {
@@ -25,11 +19,53 @@
   line-height: 1.4;
 }
 
+.card-date-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
 .card-date {
-  display: block;
   font-size: 0.9rem;
   color: #7f8c8d;
   font-weight: 400;
+}
+
+.time-slot-tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.time-slot-tag:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 盤前報導 - 清晨藍色調 */
+.time-slot-pre {
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  color: #1565c0;
+  border: 1px solid #90caf9;
+}
+
+/* 盤後回顧 - 傍晚橙色調 */
+.time-slot-post {
+  background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+  color: #e65100;
+  border: 1px solid #ffb74d;
+}
+
+/* 晚間報導 - 夜晚紫色調 */
+.time-slot-evening {
+  background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+  color: #6a1b9a;
+  border: 1px solid #ce93d8;
 }
 
 .card-content {
@@ -42,11 +78,152 @@
   color: #444;
   text-align: justify;
   word-break: break-word;
+  white-space: pre-line;
 }
 
 .card-text-empty {
   color: #999;
   font-style: italic;
+}
+
+/* Markdown rendered content */
+.card-markdown {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: #444;
+  word-break: break-word;
+}
+
+.card-markdown p {
+  margin-bottom: 1em;
+  text-align: justify;
+}
+
+.card-markdown p:last-child {
+  margin-bottom: 0;
+}
+
+.card-markdown h1,
+.card-markdown h2,
+.card-markdown h3,
+.card-markdown h4,
+.card-markdown h5,
+.card-markdown h6 {
+  color: #2c3e50;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-top: 1.25em;
+  margin-bottom: 0.5em;
+}
+
+.card-markdown h1 { font-size: 1.6rem; }
+.card-markdown h2 { font-size: 1.35rem; }
+.card-markdown h3 { font-size: 1.15rem; }
+.card-markdown h4 { font-size: 1.05rem; }
+
+.card-markdown ul,
+.card-markdown ol {
+  padding-left: 1.5em;
+  margin-bottom: 1em;
+}
+
+.card-markdown li {
+  margin-bottom: 0.35em;
+}
+
+.card-markdown blockquote {
+  margin: 1em 0;
+  padding: 0.5em 1em;
+  border-left: 4px solid #d0d7de;
+  background-color: #f8f9fa;
+  color: #555;
+  border-radius: 0 4px 4px 0;
+}
+
+.card-markdown blockquote p {
+  margin-bottom: 0;
+}
+
+.card-markdown code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-size: 0.9em;
+  background-color: #f0f0f0;
+  padding: 0.15em 0.4em;
+  border-radius: 3px;
+  color: #c7254e;
+}
+
+.card-markdown pre {
+  background-color: #f6f8fa;
+  border: 1px solid #e1e4e8;
+  border-radius: 6px;
+  padding: 1em 1.25em;
+  overflow-x: auto;
+  margin-bottom: 1em;
+}
+
+.card-markdown pre code {
+  background: none;
+  padding: 0;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.card-markdown a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+.card-markdown a:hover {
+  color: #2980b9;
+  text-decoration: underline;
+}
+
+.card-markdown a:visited {
+  color: #8e44ad;
+}
+
+.card-markdown hr {
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin: 1.5em 0;
+}
+
+.card-markdown table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1em;
+  font-size: 0.95rem;
+}
+
+.card-markdown th,
+.card-markdown td {
+  padding: 0.5em 0.75em;
+  border: 1px solid #d0d7de;
+  text-align: left;
+}
+
+.card-markdown th {
+  background-color: #f6f8fa;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.card-markdown tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.card-markdown img {
+  max-width: 100%;
+  border-radius: 4px;
+}
+
+.card-markdown strong {
+  color: #2c3e50;
+}
+
+.card-markdown em {
+  color: #555;
 }
 
 .card-metadata {
@@ -96,6 +273,32 @@
   font-weight: 500;
 }
 
+.metadata-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.metadata-link {
+  display: inline-block;
+  color: #3498db;
+  text-decoration: none;
+  font-size: 0.9rem;
+  padding: 0.25rem 0;
+  transition: color 0.2s ease;
+  word-break: break-all;
+}
+
+.metadata-link:hover {
+  color: #2980b9;
+  text-decoration: underline;
+}
+
+.metadata-link:visited {
+  color: #8e44ad;
+}
+
 @media (max-width: 768px) {
   .card {
     padding: 1.5rem;
@@ -109,6 +312,19 @@
   .card-text {
     font-size: 1rem;
     line-height: 1.7;
+  }
+
+  .card-date-row {
+    gap: 0.5rem;
+  }
+
+  .card-date {
+    font-size: 0.85rem;
+  }
+
+  .time-slot-tag {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.6rem;
   }
 
   .metadata-item {
