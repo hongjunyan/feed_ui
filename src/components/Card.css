@@ -504,6 +504,12 @@
   background: #faf5ff;
 }
 
+/* ── Reference list layout (card-specific positioning) ── */
+.metadata-item-refs {
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 /* ── Responsive ── */
 @media (max-width: 768px) {
   .card {

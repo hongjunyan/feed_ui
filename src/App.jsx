@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import ArticleListItem from './components/ArticleListItem'
 import Card from './components/Card'
+import TopicTimeline from './components/TopicTimeline'
 import './App.css'
 
 const FALLBACK_DATA = [
@@ -28,6 +29,7 @@ function App() {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const [selectedIndex, setSelectedIndex] = useState(null)
+  const [activeView, setActiveView] = useState('feed') // 'feed' | 'timeline'
   const mainPanelRef = useRef(null)
 
   const sortByDateDesc = (arr) =>
@@ -52,6 +54,14 @@ function App() {
 
   const handleSelect = (index) => {
     setSelectedIndex(index)
+    if (mainPanelRef.current) {
+      mainPanelRef.current.scrollTop = 0
+    }
+  }
+
+  const handleTimelineArticleSelect = (index) => {
+    setSelectedIndex(index)
+    setActiveView('feed')
     if (mainPanelRef.current) {
       mainPanelRef.current.scrollTop = 0
     }
@@ -100,7 +110,37 @@ function App() {
           <div className="app-divider" />
           <p className="app-subtitle">世界很吵，五則就好</p>
         </div>
-        {hasSelection && (
+
+        <nav className="app-tabs">
+          <button
+            className={`app-tab ${activeView === 'feed' ? 'app-tab-active' : ''}`}
+            onClick={() => setActiveView('feed')}
+            type="button"
+          >
+            <svg className="app-tab-icon" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
+              <rect x="1" y="1" width="5" height="2" rx="0.8" />
+              <rect x="1" y="5" width="12" height="2" rx="0.8" />
+              <rect x="1" y="9" width="9" height="2" rx="0.8" />
+            </svg>
+            Feed
+          </button>
+          <button
+            className={`app-tab ${activeView === 'timeline' ? 'app-tab-active' : ''}`}
+            onClick={() => setActiveView('timeline')}
+            type="button"
+          >
+            <svg className="app-tab-icon" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="3" cy="11" r="1.2" />
+              <circle cx="7" cy="7" r="1.2" />
+              <circle cx="11" cy="4" r="1.2" />
+              <line x1="3" y1="11" x2="7" y2="7" stroke="currentColor" strokeWidth="1" />
+              <line x1="7" y1="7" x2="11" y2="4" stroke="currentColor" strokeWidth="1" />
+            </svg>
+            趨勢圖
+          </button>
+        </nav>
+
+        {activeView === 'feed' && hasSelection && (
           <button
             className="mobile-back-btn"
             onClick={() => setSelectedIndex(null)}
@@ -111,46 +151,52 @@ function App() {
         )}
       </header>
 
-      <div className={`app-layout ${hasSelection ? 'has-selection' : ''}`}>
-        {/* Layer 1 — article list / sidebar */}
-        <aside className="sidebar">
-          <div className="sidebar-inner">
-            {data.length === 0 ? (
-              <div className="empty-state">目前沒有資料</div>
-            ) : (
-              <>
-                <div className="sidebar-header">
-                  <span className="sidebar-count">共 {data.length} 篇</span>
-                </div>
-                {data.map((item, index) => (
-                  <ArticleListItem
-                    key={index}
-                    data={item}
-                    isSelected={selectedIndex === index}
-                    compact={hasSelection}
-                    topicBand={topicBands[index]}
-                    onClick={() => handleSelect(index)}
-                  />
-                ))}
-              </>
-            )}
-          </div>
-        </aside>
+      {activeView === 'timeline' ? (
+        <div className="app-timeline-view">
+          <TopicTimeline data={data} />
+        </div>
+      ) : (
+        <div className={`app-layout ${hasSelection ? 'has-selection' : ''}`}>
+          {/* Layer 1 — article list / sidebar */}
+          <aside className="sidebar">
+            <div className="sidebar-inner">
+              {data.length === 0 ? (
+                <div className="empty-state">目前沒有資料</div>
+              ) : (
+                <>
+                  <div className="sidebar-header">
+                    <span className="sidebar-count">共 {data.length} 篇</span>
+                  </div>
+                  {data.map((item, index) => (
+                    <ArticleListItem
+                      key={index}
+                      data={item}
+                      isSelected={selectedIndex === index}
+                      compact={hasSelection}
+                      topicBand={topicBands[index]}
+                      onClick={() => handleSelect(index)}
+                    />
+                  ))}
+                </>
+              )}
+            </div>
+          </aside>
 
-        {/* Layer 2 — article detail */}
-        <main className="main-panel" ref={mainPanelRef}>
-          {hasSelection ? (
-            <div className="detail-inner">
-              <Card data={data[selectedIndex]} />
-            </div>
-          ) : (
-            <div className="empty-detail">
-              <span className="empty-detail-icon">📰</span>
-              <span>點擊左側文章以閱讀詳細內容</span>
-            </div>
-          )}
-        </main>
-      </div>
+          {/* Layer 2 — article detail */}
+          <main className="main-panel" ref={mainPanelRef}>
+            {hasSelection ? (
+              <div className="detail-inner">
+                <Card data={data[selectedIndex]} />
+              </div>
+            ) : (
+              <div className="empty-detail">
+                <span className="empty-detail-icon">📰</span>
+                <span>點擊左側文章以閱讀詳細內容</span>
+              </div>
+            )}
+          </main>
+        </div>
+      )}
     </div>
   )
 }

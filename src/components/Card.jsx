@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import { buildUrlMap, processContent, buildMdComponents, CiteRefList } from './CiteBadge'
 import './Card.css'
 
 const ALGO_CONFIG = {
@@ -19,7 +20,6 @@ const ALGO_CONFIG = {
 function Card({ data }) {
   const { title, content, date, metadata, time_slot } = data
 
-  // 格式化日期顯示
   const formatDate = (dateString) => {
     if (!dateString) return ''
     try {
@@ -38,7 +38,6 @@ function Card({ data }) {
     }
   }
 
-  // 獲取時段標籤的類型
   const getTimeSlotClass = (timeSlot) => {
     if (!timeSlot) return ''
     if (timeSlot === '盤前報導') return 'time-slot-pre'
@@ -47,72 +46,28 @@ function Card({ data }) {
     return ''
   }
 
-  // 渲染 URLs
-  const renderUrls = (urls) => {
-    if (!Array.isArray(urls) || urls.length === 0) return null
-
-    return (
-      <div className="metadata-links">
-        {urls.map((item, idx) => {
-          // 支援 [title, url] 格式
-          if (Array.isArray(item) && item.length >= 2) {
-            const [linkTitle, linkUrl] = item
-            return (
-              <a 
-                key={idx} 
-                href={linkUrl} 
-                className="metadata-link"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {linkTitle}
-              </a>
-            )
-          }
-          // 支援 {title, url} 格式
-          if (typeof item === 'object' && item !== null && item.title && item.url) {
-            return (
-              <a 
-                key={idx} 
-                href={item.url} 
-                className="metadata-link"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {item.title}
-              </a>
-            )
-          }
-          return null
-        })}
-      </div>
-    )
-  }
+  const urlMap = useMemo(() => buildUrlMap(metadata?.urls), [metadata?.urls])
+  const { processedContent, refNumbers } = useMemo(() => processContent(content), [content])
+  const mdComponents = useMemo(() => buildMdComponents(urlMap), [urlMap])
 
   const algo = metadata?.algo
   const algoConfig = algo ? ALGO_CONFIG[algo] : null
 
-  // 渲染 metadata
   const renderMetadata = () => {
-    if (!metadata || Object.keys(metadata).length === 0) {
-      return null
-    }
+    if (!metadata || Object.keys(metadata).length === 0) return null
 
     return (
       <div className="card-metadata">
         {Object.entries(metadata).map(([key, value]) => {
-          // 隱藏 algo 欄位（已在 header 呈現）
           if (key === 'algo') return null
-          // 特別處理 urls 欄位
           if (key === 'urls') {
             return (
-              <div key={key} className="metadata-item">
-                <span className="metadata-label">{key}:</span>
-                {renderUrls(value)}
+              <div key={key} className="metadata-item metadata-item-refs">
+                <span className="metadata-label">參考來源</span>
+                <CiteRefList refNumbers={refNumbers} urlMap={urlMap} />
               </div>
             )
           }
-          // 如果值是陣列，顯示為標籤
           if (Array.isArray(value)) {
             return (
               <div key={key} className="metadata-item">
@@ -125,7 +80,6 @@ function Card({ data }) {
               </div>
             )
           }
-          // 如果值是物件，遞迴顯示
           if (typeof value === 'object' && value !== null) {
             return (
               <div key={key} className="metadata-item">
@@ -134,7 +88,6 @@ function Card({ data }) {
               </div>
             )
           }
-          // 一般值
           return (
             <div key={key} className="metadata-item">
               <span className="metadata-label">{key}:</span>
@@ -173,10 +126,10 @@ function Card({ data }) {
         </div>
       </header>
       <div className="card-content">
-        {content ? (
+        {processedContent ? (
           <div className="card-markdown">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
-              {content}
+            <ReactMarkdown remarkPlugins={[remarkGfm]} components={mdComponents}>
+              {processedContent}
             </ReactMarkdown>
           </div>
         ) : (

@@ -120,6 +120,57 @@
   text-overflow: ellipsis;
 }
 
+/* ── Nav Tabs ── */
+.app-tabs {
+  display: flex;
+  gap: 0.25rem;
+  margin-left: auto;
+}
+
+.app-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.83rem;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.app-tab:hover {
+  background: var(--color-accent-light);
+  color: var(--color-accent);
+}
+
+.app-tab-active {
+  background: var(--color-accent-light);
+  border-color: var(--color-accent-border);
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+.app-tab-icon {
+  width: 13px;
+  height: 13px;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+/* ── Timeline View Container ── */
+.app-timeline-view {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
 /* Mobile back button */
 .mobile-back-btn {
   display: none;

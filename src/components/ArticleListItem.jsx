@@ -6,8 +6,10 @@ const ALGO_CONFIG = {
   STORM:     { label: 'STORM',     cls: 'algo-storm' },
 }
 
+const CITE_RE = /\[\[([0-9a-f]{8})\]\]/g
+
 function ArticleListItem({ data, isSelected, onClick, compact, topicBand }) {
-  const { title, date, metadata, time_slot } = data
+  const { title, content, date, metadata, time_slot } = data
 
   const formatDate = (dateString) => {
     if (!dateString) return ''
@@ -32,7 +34,17 @@ function ArticleListItem({ data, isSelected, onClick, compact, topicBand }) {
     return ''
   }
 
-  const urlCount = Array.isArray(metadata?.urls) ? metadata.urls.length : 0
+  const urlCount = (() => {
+    if (!content || !Array.isArray(metadata?.urls) || metadata.urls.length === 0) return 0
+    const validCodes = new Set(metadata.urls.map(item => Array.isArray(item) ? item[0] : null).filter(Boolean))
+    CITE_RE.lastIndex = 0
+    const cited = new Set()
+    let m
+    while ((m = CITE_RE.exec(content)) !== null) {
+      if (validCodes.has(m[1])) cited.add(m[1])
+    }
+    return cited.size
+  })()
   const topic = metadata?.topic
   const algo = metadata?.algo
   const algoConfig = algo ? ALGO_CONFIG[algo] : null
