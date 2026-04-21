@@ -1,7 +1,12 @@
 import React from 'react'
 import './ArticleListItem.css'
 
-function ArticleListItem({ data, isSelected, onClick, compact }) {
+const ALGO_CONFIG = {
+  OmniThink: { label: 'OmniThink', cls: 'algo-omnithink' },
+  STORM:     { label: 'STORM',     cls: 'algo-storm' },
+}
+
+function ArticleListItem({ data, isSelected, onClick, compact, topicBand }) {
   const { title, date, metadata, time_slot } = data
 
   const formatDate = (dateString) => {
@@ -29,14 +34,21 @@ function ArticleListItem({ data, isSelected, onClick, compact }) {
 
   const urlCount = Array.isArray(metadata?.urls) ? metadata.urls.length : 0
   const topic = metadata?.topic
+  const algo = metadata?.algo
+  const algoConfig = algo ? ALGO_CONFIG[algo] : null
 
   return (
     <button
-      className={`ali ${isSelected ? 'selected' : ''} ${compact ? 'compact' : ''}`}
+      className={`ali ${isSelected ? 'selected' : ''} ${compact ? 'compact' : ''} ${algoConfig ? algoConfig.cls : ''} topic-band-${topicBand ?? 0}`}
       onClick={onClick}
       type="button"
     >
-      {topic && <span className="ali-topic">{topic}</span>}
+      <div className="ali-top-row">
+        {topic && <span className="ali-topic">{topic}</span>}
+        {algoConfig && (
+          <span className={`ali-algo-badge ${algoConfig.cls}`}>{algoConfig.label}</span>
+        )}
+      </div>
       <h3 className="ali-title">{title || '無標題'}</h3>
       <div className="ali-meta">
         {date && <span className="ali-date">{formatDate(date)}</span>}

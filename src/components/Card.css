@@ -4,6 +4,151 @@
   padding: 2.25rem 2.5rem;
   box-shadow: var(--shadow-md);
   border: 1px solid var(--color-border-light);
+  overflow: hidden;
+}
+
+/* ── Algo banner ── */
+.card-algo-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: -2.25rem -2.5rem 1.75rem;
+  padding: 0.6rem 2.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+}
+
+.card-algo-icon {
+  font-size: 1rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.card-algo-name {
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.card-algo-desc {
+  font-size: 0.75rem;
+  font-weight: 400;
+  opacity: 0.75;
+  letter-spacing: 0.02em;
+}
+
+/* OmniThink — warm amber theme */
+.card-algo-banner.algo-omnithink {
+  background: linear-gradient(90deg, #fffbeb 0%, #fef3c7 60%, #fde68a40 100%);
+  color: #92400e;
+  border-bottom-color: #fcd34d;
+}
+
+.card.algo-omnithink {
+  border-color: #fde68a;
+  box-shadow: var(--shadow-md), 0 0 0 1px #fde68a40;
+}
+
+.card.algo-omnithink .card-header {
+  border-bottom-color: #fde68a;
+}
+
+.card.algo-omnithink .card-markdown h2 {
+  border-bottom-color: #fde68a;
+  color: #78350f;
+}
+
+.card.algo-omnithink .card-markdown h3,
+.card.algo-omnithink .card-markdown h4 {
+  color: #92400e;
+}
+
+.card.algo-omnithink .card-markdown li::marker {
+  color: #d97706;
+}
+
+.card.algo-omnithink .card-markdown blockquote {
+  border-left-color: #f59e0b;
+  background: linear-gradient(135deg, #fffbeb, #fef9f0);
+}
+
+.card.algo-omnithink .card-markdown a {
+  color: #d97706;
+}
+
+.card.algo-omnithink .card-markdown a:hover {
+  color: #b45309;
+  border-bottom-color: #b45309;
+}
+
+.card.algo-omnithink .metadata-link {
+  color: #b45309;
+  background: #fffbeb;
+  border-color: #fcd34d;
+}
+
+.card.algo-omnithink .metadata-link:hover {
+  background: #fef3c7;
+  border-color: #f59e0b;
+}
+
+/* STORM — electric blue theme */
+.card-algo-banner.algo-storm {
+  background: linear-gradient(90deg, #eff6ff 0%, #dbeafe 60%, #bfdbfe40 100%);
+  color: #1e3a8a;
+  border-bottom-color: #93c5fd;
+}
+
+.card.algo-storm {
+  border-color: #bfdbfe;
+  box-shadow: var(--shadow-md), 0 0 0 1px #bfdbfe40;
+}
+
+.card.algo-storm .card-header {
+  border-bottom-color: #bfdbfe;
+}
+
+.card.algo-storm .card-markdown h2 {
+  border-bottom-color: #bfdbfe;
+  color: #1e3a8a;
+}
+
+.card.algo-storm .card-markdown h3,
+.card.algo-storm .card-markdown h4 {
+  color: #1d4ed8;
+}
+
+.card.algo-storm .card-markdown li::marker {
+  color: #3b82f6;
+}
+
+.card.algo-storm .card-markdown blockquote {
+  border-left-color: #3b82f6;
+  background: linear-gradient(135deg, #eff6ff, #f0f8ff);
+}
+
+.card.algo-storm .card-markdown a {
+  color: #2563eb;
+}
+
+.card.algo-storm .card-markdown a:hover {
+  color: #1d4ed8;
+  border-bottom-color: #1d4ed8;
+}
+
+.card.algo-storm .metadata-link {
+  color: #1d4ed8;
+  background: #eff6ff;
+  border-color: #93c5fd;
+}
+
+.card.algo-storm .metadata-link:hover {
+  background: #dbeafe;
+  border-color: #3b82f6;
 }
 
 /* ── Header ── */
@@ -364,6 +509,12 @@
   .card {
     padding: 1.5rem 1.25rem;
     border-radius: 8px;
+  }
+
+  .card-algo-banner {
+    margin: -1.5rem -1.25rem 1.25rem;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.75rem;
   }
 
   .card-title {

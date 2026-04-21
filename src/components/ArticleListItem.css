@@ -15,27 +15,29 @@
   border-radius: 0;
 }
 
+/* ── Top row (topic + algo badge) ── */
+.ali-top-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.45rem;
+}
+
 .ali:first-child {
   border-top: 1px solid var(--color-border-light);
 }
 
-/* Hover shimmer */
+/* Hover shimmer — kept subtle, no sliding sweep */
 .ali::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.04), transparent);
-  transform: translateX(-100%);
-  transition: transform 0.4s ease;
   pointer-events: none;
 }
 
-.ali:hover::after {
-  transform: translateX(100%);
-}
-
 .ali:hover {
-  background: #fafaf8;
+  background: #f4f4f1;
 }
 
 /* Left accent bar */
@@ -85,7 +87,6 @@
   border: 1px solid var(--color-border);
   padding: 0.1rem 0.5rem;
   border-radius: 4px;
-  margin-bottom: 0.45rem;
   letter-spacing: 0.04em;
   white-space: nowrap;
   max-width: 100%;
@@ -98,6 +99,109 @@
   background: var(--color-accent-border);
   border-color: var(--color-accent-border);
   color: var(--color-accent-hover);
+}
+
+/* ── Topic band backgrounds ── */
+/* band-0: white (default — no extra rule needed)         */
+/* band-1: a very light warm tint to signal a new topic   */
+.ali.topic-band-1:not(.selected) {
+  background: #f8f7f4;
+}
+
+.ali.topic-band-1:not(.selected):hover {
+  background: #efede9;
+}
+
+/* ── Algo badge (list item) ── */
+.ali-algo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 0.1rem 0.5rem;
+  border-radius: 4px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* OmniThink — warm amber/golden */
+.ali-algo-badge.algo-omnithink {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  color: #92400e;
+  border: 1px solid #f59e0b;
+}
+
+/* STORM — electric blue */
+.ali-algo-badge.algo-storm {
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  color: #1e3a8a;
+  border: 1px solid #3b82f6;
+}
+
+/* ── Algo-specific left accent bar ── */
+.ali.algo-omnithink::before {
+  background: linear-gradient(180deg, #f59e0b, #d97706);
+}
+
+.ali.algo-omnithink:hover {
+  background: #fffbf0;
+}
+
+.ali.algo-omnithink.selected {
+  background: #fffbeb;
+  border-bottom-color: #fde68a;
+}
+
+.ali.algo-omnithink.selected::before {
+  background: linear-gradient(180deg, #f59e0b, #d97706);
+}
+
+.ali.algo-omnithink:hover .ali-title {
+  color: #d97706;
+}
+
+.ali.algo-omnithink.selected .ali-title {
+  color: #b45309;
+}
+
+.ali.algo-omnithink.selected .ali-topic {
+  background: #fde68a;
+  border-color: #f59e0b;
+  color: #92400e;
+}
+
+.ali.algo-storm::before {
+  background: linear-gradient(180deg, #3b82f6, #2563eb);
+}
+
+.ali.algo-storm:hover {
+  background: #f0f6ff;
+}
+
+.ali.algo-storm.selected {
+  background: #eff6ff;
+  border-bottom-color: #bfdbfe;
+}
+
+.ali.algo-storm.selected::before {
+  background: linear-gradient(180deg, #3b82f6, #2563eb);
+}
+
+.ali.algo-storm:hover .ali-title {
+  color: #2563eb;
+}
+
+.ali.algo-storm.selected .ali-title {
+  color: #1d4ed8;
+}
+
+.ali.algo-storm.selected .ali-topic {
+  background: #bfdbfe;
+  border-color: #3b82f6;
+  color: #1e3a8a;
 }
 
 /* Title */

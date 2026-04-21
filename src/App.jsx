@@ -59,6 +59,19 @@ function App() {
 
   const hasSelection = selectedIndex !== null
 
+  // Compute alternating topic bands: flip 0↔1 whenever the topic changes.
+  // Items sharing the same consecutive topic share the same band value.
+  const topicBands = (() => {
+    let band = 0
+    let lastTopic = undefined
+    return data.map((item) => {
+      const topic = item?.metadata?.topic
+      if (lastTopic !== undefined && topic !== lastTopic) band = 1 - band
+      lastTopic = topic
+      return band
+    })
+  })()
+
   if (loading) {
     return (
       <div className="app-loading">
@@ -85,7 +98,7 @@ function App() {
             <h1>Feed 牆</h1>
           </div>
           <div className="app-divider" />
-          <p className="app-subtitle">世界很吵，五則就好，每日00:00點準時更新</p>
+          <p className="app-subtitle">世界很吵，五則就好</p>
         </div>
         {hasSelection && (
           <button
@@ -115,6 +128,7 @@ function App() {
                     data={item}
                     isSelected={selectedIndex === index}
                     compact={hasSelection}
+                    topicBand={topicBands[index]}
                     onClick={() => handleSelect(index)}
                   />
                 ))}

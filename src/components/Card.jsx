@@ -3,6 +3,19 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import './Card.css'
 
+const ALGO_CONFIG = {
+  OmniThink: {
+    cls: 'algo-omnithink',
+    label: 'OmniThink',
+    description: '',
+  },
+  STORM: {
+    cls: 'algo-storm',
+    label: 'STORM',
+    description: '',
+  },
+}
+
 function Card({ data }) {
   const { title, content, date, metadata, time_slot } = data
 
@@ -76,6 +89,9 @@ function Card({ data }) {
     )
   }
 
+  const algo = metadata?.algo
+  const algoConfig = algo ? ALGO_CONFIG[algo] : null
+
   // 渲染 metadata
   const renderMetadata = () => {
     if (!metadata || Object.keys(metadata).length === 0) {
@@ -85,6 +101,8 @@ function Card({ data }) {
     return (
       <div className="card-metadata">
         {Object.entries(metadata).map(([key, value]) => {
+          // 隱藏 algo 欄位（已在 header 呈現）
+          if (key === 'algo') return null
           // 特別處理 urls 欄位
           if (key === 'urls') {
             return (
@@ -129,7 +147,16 @@ function Card({ data }) {
   }
 
   return (
-    <article className="card">
+    <article className={`card ${algoConfig ? algoConfig.cls : ''}`}>
+      {algoConfig && (
+        <div className={`card-algo-banner ${algoConfig.cls}`}>
+          <span className="card-algo-icon" aria-hidden="true">
+            {algoConfig.cls === 'algo-omnithink' ? '◉' : '⚡'}
+          </span>
+          <span className="card-algo-name">{algoConfig.label}</span>
+          <span className="card-algo-desc">{algoConfig.description}</span>
+        </div>
+      )}
       <header className="card-header">
         <h2 className="card-title">{title || '無標題'}</h2>
         <div className="card-date-row">
