@@ -51,7 +51,8 @@
 }
 
 .cite-popover {
-  /* position/top/left/transform are set inline by the portal */
+  /* position/top/left are set inline; transform is fixed here */
+  transform: translateX(-50%) translateY(calc(-100% - 6px));
   z-index: 9999;
   display: block;
   min-width: 220px;
@@ -62,12 +63,12 @@
   box-shadow: 0 4px 20px rgba(0,0,0,0.15), 0 1px 4px rgba(0,0,0,0.08);
   padding: 0;
   overflow: hidden;
-  animation: cite-pop-in 0.12s ease;
+  animation: cite-pop-in 0.1s ease;
 }
 
 @keyframes cite-pop-in {
-  from { opacity: 0; transform: translateX(-50%) translateY(4px); }
-  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 .cite-popover-link {

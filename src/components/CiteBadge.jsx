@@ -50,35 +50,35 @@ export function buildMdComponents(urlMap) {
   }
 }
 
-/** Inline superscript citation badge with click-to-reveal portal popover */
+/** Inline superscript citation badge — hover to reveal, portal-rendered popover */
 export function CiteBadge({ n, code, urlMap }) {
   const [open, setOpen] = useState(false)
   const [coords, setCoords] = useState({ top: 0, left: 0 })
   const triggerRef = useRef(null)
   const popoverRef = useRef(null)
+  const hideTimer = useRef(null)
   const urlData = urlMap[code]
 
-  const handleToggle = () => {
-    if (!open && triggerRef.current) {
+  // Cleanup timers on unmount
+  useEffect(() => () => clearTimeout(hideTimer.current), [])
+
+  const scheduleHide = () => {
+    hideTimer.current = setTimeout(() => setOpen(false), 120)
+  }
+
+  const cancelHide = () => clearTimeout(hideTimer.current)
+
+  const handleTriggerEnter = () => {
+    cancelHide()
+    if (triggerRef.current) {
       const rect = triggerRef.current.getBoundingClientRect()
       setCoords({
         top: rect.top + window.scrollY,
         left: rect.left + rect.width / 2,
       })
     }
-    setOpen((v) => !v)
+    setOpen(true)
   }
-
-  useEffect(() => {
-    if (!open) return
-    const handler = (e) => {
-      const insideTrigger = triggerRef.current?.contains(e.target)
-      const insidePopover = popoverRef.current?.contains(e.target)
-      if (!insideTrigger && !insidePopover) setOpen(false)
-    }
-    document.addEventListener('mousedown', handler)
-    return () => document.removeEventListener('mousedown', handler)
-  }, [open])
 
   if (!urlData) {
     return <sup className="cite-badge cite-badge-unknown">{n}</sup>
@@ -89,10 +89,11 @@ export function CiteBadge({ n, code, urlMap }) {
       <sup
         ref={triggerRef}
         className={`cite-badge${open ? ' cite-badge-open' : ''}`}
-        onClick={handleToggle}
-        role="button"
+        onMouseEnter={handleTriggerEnter}
+        onMouseLeave={scheduleHide}
         tabIndex={0}
-        onKeyDown={(e) => e.key === 'Enter' && handleToggle()}
+        onFocus={handleTriggerEnter}
+        onBlur={scheduleHide}
         aria-expanded={open}
         aria-label={`參考來源 ${n}`}
       >
@@ -105,10 +106,11 @@ export function CiteBadge({ n, code, urlMap }) {
           role="tooltip"
           style={{
             position: 'absolute',
-            top: coords.top,
-            left: coords.left,
-            transform: 'translateX(-50%) translateY(calc(-100% - 6px))',
+            top: `${coords.top}px`,
+            left: `${coords.left}px`,
           }}
+          onMouseEnter={cancelHide}
+          onMouseLeave={scheduleHide}
         >
           <a
             href={urlData.url}

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="DJShakespeare">
+  <!-- Original artwork: stage palette + DJ headphones + stylized quill (no likeness / no third-party marks) -->
+  <defs>
+    <linearGradient id="stage" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2d1b52"/>
+      <stop offset="100%" stop-color="#0f0818"/>
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="8" fill="#150d24"/>
+  <rect width="32" height="32" rx="8" fill="url(#stage)"/>
+  <!-- Headphones -->
+  <path
+    fill="none"
+    stroke="#d4af37"
+    stroke-width="2.2"
+    stroke-linecap="round"
+    d="M9 19.2v-1.4a7 7 0 0 1 14 0v1.4"
+  />
+  <rect x="5.8" y="17.8" width="6.2" height="9.2" rx="2.6" fill="#d4af37"/>
+  <rect x="20" y="17.8" width="6.2" height="9.2" rx="2.6" fill="#d4af37"/>
+  <!-- Stylized quill -->
+  <path
+    fill="#f2ead8"
+    d="M23.2 4.8 25 6.2 20.5 14.5l-1.4-.9 2.8-4.5-3.2 3.6-1-.9 5.5-7z"
+  />
+  <path
+    stroke="#f2ead8"
+    stroke-width="1.4"
+    stroke-linecap="round"
+    fill="none"
+    d="M18.8 12.8 15.5 16.2"
+  />
+</svg>
