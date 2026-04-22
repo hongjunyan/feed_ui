@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import ArticleListItem from './components/ArticleListItem'
 import Card from './components/Card'
 import TopicTimeline from './components/TopicTimeline'
+import InvestorStory from './components/InvestorStory'
 import './App.css'
 
 const FALLBACK_DATA = [
@@ -29,7 +30,7 @@ function App() {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const [selectedIndex, setSelectedIndex] = useState(null)
-  const [activeView, setActiveView] = useState('feed') // 'feed' | 'timeline'
+  const [activeView, setActiveView] = useState('feed') // 'feed' | 'timeline' | 'methodology'
   const mainPanelRef = useRef(null)
 
   const sortByDateDesc = (arr) =>
@@ -138,6 +139,19 @@ function App() {
             </svg>
             趨勢圖
           </button>
+          <button
+            className={`app-tab ${activeView === 'methodology' ? 'app-tab-active' : ''}`}
+            onClick={() => setActiveView('methodology')}
+            type="button"
+          >
+            <svg className="app-tab-icon" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M2.5 2.5h4v4h-4v-4zm5 0h4v4h-4v-4zm-5 5h4v4h-4v-4zm5 0h4v4h-4v-4z"
+                fill="currentColor"
+              />
+            </svg>
+            產製說明
+          </button>
         </nav>
 
         {activeView === 'feed' && hasSelection && (
@@ -154,6 +168,10 @@ function App() {
       {activeView === 'timeline' ? (
         <div className="app-timeline-view">
           <TopicTimeline data={data} />
+        </div>
+      ) : activeView === 'methodology' ? (
+        <div className="app-methodology-view">
+          <InvestorStory />
         </div>
       ) : (
         <div className={`app-layout ${hasSelection ? 'has-selection' : ''}`}>
