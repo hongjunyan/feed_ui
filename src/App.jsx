@@ -3,6 +3,9 @@ import ArticleListItem from './components/ArticleListItem'
 import Card from './components/Card'
 import TopicTimeline from './components/TopicTimeline'
 import InvestorStory from './components/InvestorStory'
+import PromptManager from './components/PromptManager'
+import AddTopicModal from './components/AddTopicModal'
+import useTopicTasks from './hooks/useTopicTasks'
 import './App.css'
 
 const FALLBACK_DATA = [
@@ -31,6 +34,7 @@ function App() {
   const [loading, setLoading] = useState(true)
   const [selectedIndex, setSelectedIndex] = useState(null)
   const [activeView, setActiveView] = useState('feed') // 'feed' | 'timeline' | 'methodology'
+  const [addTopicOpen, setAddTopicOpen] = useState(false)
   const mainPanelRef = useRef(null)
 
   const sortByDateDesc = (arr) =>
@@ -40,8 +44,8 @@ function App() {
       return tb - ta
     })
 
-  useEffect(() => {
-    fetch('/newsfeed/data.json')
+  const fetchFeed = React.useCallback(() => {
+    return fetch('https://pm.moneydj.com/djshakespeare/feed')
       .then((res) => res.json())
       .then((json) => {
         setData(sortByDateDesc(json))
@@ -52,6 +56,29 @@ function App() {
         setLoading(false)
       })
   }, [])
+
+  useEffect(() => {
+    fetchFeed()
+  }, [fetchFeed])
+
+  const { tasks: runningTasks, submitTopic, removeTask, hasRunning } = useTopicTasks({
+    onTaskCompleted: () => fetchFeed(),
+  })
+
+  const existingTopicSet = React.useMemo(() => {
+    const s = new Set()
+    for (const item of data) {
+      const t = item?.metadata?.topic
+      if (t) s.add(t)
+    }
+    for (const t of Object.keys(runningTasks)) s.add(t)
+    return s
+  }, [data, runningTasks])
+
+  const handleAddTopicSubmit = async ({ topic, end }) => {
+    await submitTopic({ topic, end })
+    setAddTopicOpen(false)
+  }
 
   const handleSelect = (index) => {
     setSelectedIndex(index)
@@ -152,6 +179,19 @@ function App() {
             </svg>
             產製說明
           </button>
+          <button
+            className={`app-tab ${activeView === 'prompts' ? 'app-tab-active' : ''}`}
+            onClick={() => setActiveView('prompts')}
+            type="button"
+          >
+            <svg className="app-tab-icon" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M2 2.5h10v1.2H2V2.5zm0 3h10v1.2H2V5.5zm0 3h7v1.2H2V8.5zm9.2 1.6l-.9.9 1.6 1.6.9-.9-1.6-1.6z"
+                fill="currentColor"
+              />
+            </svg>
+            Prompt 管理
+          </button>
         </nav>
 
         {activeView === 'feed' && hasSelection && (
@@ -173,11 +213,59 @@ function App() {
         <div className="app-methodology-view">
           <InvestorStory />
         </div>
+      ) : activeView === 'prompts' ? (
+        <PromptManager />
       ) : (
         <div className={`app-layout ${hasSelection ? 'has-selection' : ''}`}>
           {/* Layer 1 — article list / sidebar */}
           <aside className="sidebar">
             <div className="sidebar-inner">
+              {!hasSelection && (
+                <div className="sidebar-add-topic">
+                  <button
+                    className="add-topic-trigger"
+                    type="button"
+                    onClick={() => setAddTopicOpen(true)}
+                    disabled={hasRunning}
+                    title={hasRunning ? '尚有主題執行中，請等待完成' : '加入新主題'}
+                  >
+                    <span className="add-topic-trigger-icon">＋</span>
+                    {hasRunning ? '主題執行中…' : '加入新主題'}
+                  </button>
+                  {Object.keys(runningTasks).length > 0 && (
+                    <div className="running-tasks">
+                      {Object.entries(runningTasks).map(([topic, t]) => {
+                        const failed = t.status === 'failed'
+                        return (
+                          <div
+                            key={topic}
+                            className={`running-task ${failed ? 'running-task-failed' : ''}`}
+                          >
+                            <div className="running-task-topic">
+                              {!failed && <span className="running-task-spinner" />}
+                              <span>{topic}</span>
+                            </div>
+                            <div className="running-task-meta">
+                              {failed
+                                ? `失敗：${t.error || '未知錯誤'}`
+                                : `狀態：${t.status || 'pending'}${t.current_node ? ` · ${t.current_node}` : ''}`}
+                            </div>
+                            {failed && (
+                              <button
+                                type="button"
+                                className="running-task-dismiss"
+                                onClick={() => removeTask(topic)}
+                              >
+                                清除
+                              </button>
+                            )}
+                          </div>
+                        )
+                      })}
+                    </div>
+                  )}
+                </div>
+              )}
               {data.length === 0 ? (
                 <div className="empty-state">目前沒有資料</div>
               ) : (
@@ -204,7 +292,7 @@ function App() {
           <main className="main-panel" ref={mainPanelRef}>
             {hasSelection ? (
               <div className="detail-inner">
-                <Card data={data[selectedIndex]} />
+                <Card data={data[selectedIndex]} onTaskCompleted={fetchFeed} />
               </div>
             ) : (
               <div className="empty-detail">
@@ -215,6 +303,13 @@ function App() {
           </main>
         </div>
       )}
+
+      <AddTopicModal
+        open={addTopicOpen}
+        onClose={() => setAddTopicOpen(false)}
+        onSubmit={handleAddTopicSubmit}
+        existingTopics={existingTopicSet}
+      />
     </div>
   )
 }
