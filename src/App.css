@@ -78,6 +78,20 @@
   gap: 0.6rem;
 }
 
+.app-header-logo-button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.app-header-logo-button:hover h1 {
+  opacity: 0.75;
+}
+
 .app-header-logo-mark {
   width: 28px;
   height: 28px;

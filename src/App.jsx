@@ -4,6 +4,7 @@ import Card from './components/Card'
 import TopicTimeline from './components/TopicTimeline'
 import InvestorStory from './components/InvestorStory'
 import PromptManager from './components/PromptManager'
+import ClusterExplorer from './components/ClusterExplorer'
 import AddTopicModal from './components/AddTopicModal'
 import useTopicTasks from './hooks/useTopicTasks'
 import './App.css'
@@ -125,7 +126,12 @@ function App() {
     <div className="app">
       <header className="app-header">
         <div className="app-header-inner">
-          <div className="app-header-logo">
+          <button
+            type="button"
+            className="app-header-logo app-header-logo-button"
+            onClick={() => window.location.reload()}
+            aria-label="重新整理回首頁"
+          >
             <div className="app-header-logo-mark">
               <svg viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
                 <rect x="1" y="1" width="5" height="2" rx="1" />
@@ -134,7 +140,7 @@ function App() {
               </svg>
             </div>
             <h1>Feed 牆</h1>
-          </div>
+          </button>
           <div className="app-divider" />
           <p className="app-subtitle">世界很吵，五則就好</p>
         </div>
@@ -165,6 +171,19 @@ function App() {
               <line x1="7" y1="7" x2="11" y2="4" stroke="currentColor" strokeWidth="1" />
             </svg>
             趨勢圖
+          </button>
+          <button
+            className={`app-tab ${activeView === 'clusters' ? 'app-tab-active' : ''}`}
+            onClick={() => setActiveView('clusters')}
+            type="button"
+          >
+            <svg className="app-tab-icon" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="4" cy="4" r="2" />
+              <circle cx="10" cy="5" r="1.4" />
+              <circle cx="4.5" cy="10" r="1.6" />
+              <circle cx="10" cy="10" r="2.2" />
+            </svg>
+            主題探索
           </button>
           <button
             className={`app-tab ${activeView === 'methodology' ? 'app-tab-active' : ''}`}
@@ -215,6 +234,8 @@ function App() {
         </div>
       ) : activeView === 'prompts' ? (
         <PromptManager />
+      ) : activeView === 'clusters' ? (
+        <ClusterExplorer />
       ) : (
         <div className={`app-layout ${hasSelection ? 'has-selection' : ''}`}>
           {/* Layer 1 — article list / sidebar */}
