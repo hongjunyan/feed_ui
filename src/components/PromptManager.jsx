@@ -216,6 +216,11 @@ function PromptManager() {
                     ))}
                   </div>
                 </div>
+                {v.updated_at && (
+                  <div className="pm-version-time">
+                    {new Date(v.updated_at).toLocaleString('zh-TW', { hour12: false })}
+                  </div>
+                )}
                 {v.commit_message && (
                   <div className="pm-version-msg">{v.commit_message}</div>
                 )}

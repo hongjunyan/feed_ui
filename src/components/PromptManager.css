@@ -159,6 +159,13 @@
   color: #166534;
 }
 
+.pm-version-time {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  margin-top: 0.3rem;
+  opacity: 0.8;
+}
+
 .pm-version-msg {
   font-size: 0.78rem;
   color: var(--color-text-muted);
