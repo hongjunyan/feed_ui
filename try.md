@@ -1,44 +1,30 @@
-幫我多一個分頁是"主題探索"，當user進入該分頁時，
-會call backend GET /djshakespeare/news/clustering?date=2026-04-27，載入昨日新聞的clusters，並精美且明瞭的呈現每一個cluster。
-因為載入需要時間(大約1分鐘)，因此可以做一些有趣的等待畫面，
-在頁面上，user可以選擇日期(最大日期只能到昨天)去察看對應的新聞cluster。
-
+幫在Feed點擊進入第二層的文章中，多一個""，新增一個排程設定，可以讓user去設定，但因為user不懂crontab語法，請設計比較白話的介面
 
 
 Backend API說明如下:
 
 ENDPOINT: https://pm.moneydj.com/djshakespeare/
+POST /articles/generate-key-image
+為文章產生 N 張封面配圖。
 
-GET /djshakespeare/news/clustering
-
-參數	型別	必填	說明
-date	string	是	目標日期，格式 YYYY-MM-DD
-
-範例
-GET /djshakespeare/news/clustering?date=2026-04-27
-
-Response
+Request Body
+欄位	型別	必填	預設值	說明
+article	string	✅	—	文章內容（純文字或 Markdown）
+title	string	—	""	文章標題（提供可提升圖片相關性）
+size	string	—	"1024x1024"	圖片尺寸：1024x1024 / 1536x1024（橫）/ 1024x1536（直）
+n_images	integer	—	3	產生幾張圖，範圍 1–10
+Response Body
 {
-  "date": "2026-04-27",
-  "total": 651,        // 新聞總數
-  "n_clusters": 8,     // 群數
-  "clusters": [        // 每群摘要（按 cluster_id 排序）
-    { "cluster_id": 0, "topic": "台積電法說會與半導體展望", "count": 85 },
-    { "cluster_id": 1, "topic": "Fed 利率決議", "count": 62 }
-    // ...
-  ],
-  "items": [           // 逐篇新聞（每篇帶所屬 cluster 資訊）
+  "images": [
     {
-      "cluster_id": 0,
-      "topic": "台積電法說會與半導體展望",
-      "title": "台積電Q1營收創新高...",
-      "date": "2026-04-27T08:00:00",
-      "news_url": "https://...",
-      "ref": "a1b2c3d4"
+      "prompt": "The English prompt sent to the image model...",
+      "image_base64": "<PNG base64 string>"
     }
-    // ...
   ]
 }
-
-錯誤
-404 — 該日期無新聞：{"detail": "No news found for date 2026-04-27"}
+images 陣列長度等於 n_images
+image_base64 直接用於 <img src="data:image/png;base64,{image_base64}" />
+注意事項
+圖片風格：寫實攝影風，白天明亮光線，色調依文章情緒而定
+回應時間較長（每張約 10–20 秒），建議 UI 顯示 loading 狀態
+成本考量，n_images 建議維持預設 3 張，讓使用者選一張使用

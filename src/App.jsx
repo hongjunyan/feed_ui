@@ -4,6 +4,7 @@ import Card from './components/Card'
 import TopicTimeline from './components/TopicTimeline'
 import InvestorStory from './components/InvestorStory'
 import PromptManager from './components/PromptManager'
+import Settings from './components/Settings'
 import ClusterExplorer from './components/ClusterExplorer'
 import AddTopicModal from './components/AddTopicModal'
 import useTopicTasks from './hooks/useTopicTasks'
@@ -211,6 +212,19 @@ function App() {
             </svg>
             Prompt 管理
           </button>
+          <button
+            className={`app-tab ${activeView === 'settings' ? 'app-tab-active' : ''}`}
+            onClick={() => setActiveView('settings')}
+            type="button"
+          >
+            <svg className="app-tab-icon" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M7 4.6a2.4 2.4 0 100 4.8 2.4 2.4 0 000-4.8zm5.3 2.4a5.4 5.4 0 00-.08-.93l1.18-.92-1.2-2.08-1.4.56a5.3 5.3 0 00-1.6-.93L8.9 1.2H5.1l-.3 1.5a5.3 5.3 0 00-1.6.93l-1.4-.56-1.2 2.08 1.18.92A5.4 5.4 0 001.7 7c0 .32.03.63.08.93l-1.18.92 1.2 2.08 1.4-.56c.47.39 1.01.7 1.6.93l.3 1.5h3.8l.3-1.5a5.3 5.3 0 001.6-.93l1.4.56 1.2-2.08-1.18-.92c.05-.3.08-.61.08-.93z"
+                fill="currentColor"
+              />
+            </svg>
+            設定
+          </button>
         </nav>
 
         {activeView === 'feed' && hasSelection && (
@@ -236,6 +250,8 @@ function App() {
         <PromptManager />
       ) : activeView === 'clusters' ? (
         <ClusterExplorer />
+      ) : activeView === 'settings' ? (
+        <Settings />
       ) : (
         <div className={`app-layout ${hasSelection ? 'has-selection' : ''}`}>
           {/* Layer 1 — article list / sidebar */}

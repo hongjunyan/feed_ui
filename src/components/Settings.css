@@ -1,0 +1,402 @@
+.settings-root {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--color-bg);
+  position: relative;
+  padding: 2rem 1.5rem;
+}
+
+.settings-container {
+  max-width: 640px;
+  margin: 0 auto;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1.75rem 1.75rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.settings-header h2 {
+  margin: 0 0 0.4rem 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.settings-subtitle {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
+.settings-subtitle code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  background: #f1f1ee;
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+}
+
+.settings-loading {
+  text-align: center;
+  padding: 4rem 1rem;
+  color: var(--color-text-muted);
+}
+
+.settings-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.settings-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+}
+
+.settings-label-hint {
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.settings-input {
+  width: 100%;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  font-size: 0.92rem;
+  background: #fff;
+  color: var(--color-text-primary);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  font-family: var(--font-sans);
+}
+
+.settings-input:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-light);
+}
+
+.settings-meta {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+}
+
+.settings-error {
+  font-size: 0.82rem;
+  padding: 0.6rem 0.85rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  border-radius: 8px;
+}
+
+.settings-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  padding-top: 0.4rem;
+}
+
+.settings-btn-primary,
+.settings-btn-secondary {
+  padding: 0.55rem 1.15rem;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.settings-btn-primary {
+  background: var(--color-accent);
+  color: #fff;
+  border: none;
+}
+
+.settings-btn-primary:hover:not(:disabled) {
+  background: var(--color-accent-hover);
+}
+
+.settings-btn-secondary {
+  background: #fff;
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+}
+
+.settings-btn-secondary:hover:not(:disabled) {
+  background: var(--color-accent-light);
+  border-color: var(--color-accent-border);
+}
+
+.settings-btn-primary:disabled,
+.settings-btn-secondary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.settings-current {
+  margin-top: 0.5rem;
+  border-top: 1px solid var(--color-border-light);
+  padding-top: 1rem;
+}
+
+.settings-current-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.settings-current-body {
+  margin: 0;
+  padding: 0.75rem 0.9rem;
+  background: #f8f8f5;
+  border: 1px solid var(--color-border-light);
+  border-radius: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  overflow-x: auto;
+}
+
+.settings-toast {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  padding: 0.7rem 1rem;
+  background: #1a1a2e;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  box-shadow: var(--shadow-lg);
+  animation: settings-toast-in 0.2s ease-out;
+}
+
+@keyframes settings-toast-in {
+  from { transform: translateY(8px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* === 排程設定 === */
+.settings-section-spacing {
+  margin-top: 1.25rem;
+}
+
+.settings-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+.settings-header-row h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+/* Toggle switch */
+.settings-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.settings-switch input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.settings-switch-slider {
+  position: relative;
+  width: 38px;
+  height: 22px;
+  background: #d4d4d0;
+  border-radius: 999px;
+  transition: background 0.18s;
+}
+
+.settings-switch-slider::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
+  transition: transform 0.18s;
+}
+
+.settings-switch input:checked + .settings-switch-slider {
+  background: var(--color-accent);
+}
+
+.settings-switch input:checked + .settings-switch-slider::after {
+  transform: translateX(16px);
+}
+
+.settings-switch-label {
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+/* Mode tabs */
+.schedule-mode-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.schedule-mode-tab {
+  padding: 0.45rem 0.85rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: 1px solid var(--color-border);
+  background: #fff;
+  color: var(--color-text-secondary);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.schedule-mode-tab:hover {
+  background: var(--color-accent-light);
+  border-color: var(--color-accent-border);
+}
+
+.schedule-mode-tab.is-active {
+  background: var(--color-accent);
+  color: #fff;
+  border-color: var(--color-accent);
+}
+
+/* Day chips */
+.schedule-day-chips {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.schedule-day-chip {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: #fff;
+  color: var(--color-text-secondary);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.schedule-day-chip:hover {
+  background: var(--color-accent-light);
+  border-color: var(--color-accent-border);
+}
+
+.schedule-day-chip.is-on {
+  background: var(--color-accent);
+  color: #fff;
+  border-color: var(--color-accent);
+}
+
+/* Time input */
+.schedule-time-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.schedule-time-input {
+  width: auto;
+  min-width: 140px;
+}
+
+.settings-input-mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.88rem;
+}
+
+/* Preview block */
+.schedule-preview {
+  background: #f8f8f5;
+  border: 1px solid var(--color-border-light);
+  border-radius: 8px;
+  padding: 0.75rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.schedule-preview-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+}
+
+.schedule-preview-label {
+  flex-shrink: 0;
+  width: 72px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.schedule-preview-value {
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.schedule-preview-cron {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  background: #fff;
+  border: 1px solid var(--color-border-light);
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  color: var(--color-text-primary);
+}
+
+.settings-meta code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  background: #f1f1ee;
+  padding: 0.05rem 0.3rem;
+  border-radius: 3px;
+  margin: 0 0.15rem;
+}
+
+.schedule-actions {
+  flex-wrap: wrap;
+}
+
+.schedule-actions-spacer {
+  flex: 1;
+}
